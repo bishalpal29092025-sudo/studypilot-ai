@@ -42,7 +42,7 @@ export default function RootLayout({
         figtree.variable,
       )}
     >
-      <body className="bg-background text-foreground flex min-h-screen flex-col">
+      <body className="bg-background text-foreground flex min-h-screen flex-col suppressHydrationWarning={true}">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>
