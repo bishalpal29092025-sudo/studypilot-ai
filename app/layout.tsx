@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import AppProviders from "@/providers/AppProviders";
 import { env } from "@/config/env";
+import { Toaster } from "@/components/ui/sonner";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -25,20 +26,11 @@ export const metadata: Metadata = {
     template: "%s | StudyPilot AI",
   },
 
-  description:
-    "The AI that learns how you learn and helps you study better.",
+  description: "The AI that learns how you learn and helps you study better.",
 
   applicationName: "StudyPilot AI",
 
-  keywords: [
-    "AI",
-    "Education",
-    "Study",
-    "Learning",
-    "Roadmap",
-    "Quiz",
-    "Next.js",
-  ],
+  keywords: ["AI", "Education", "Study", "Learning", "Roadmap", "Quiz", "Next.js"],
 
   authors: [
     {
@@ -69,7 +61,10 @@ export default function RootLayout({
         suppressHydrationWarning
         className={cn("bg-background", "text-foreground", "flex", "min-h-screen", "flex-col")}
       >
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          {children}
+          <Toaster />
+        </AppProviders>
       </body>
     </html>
   );
