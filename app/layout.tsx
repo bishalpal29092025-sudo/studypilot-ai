@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import AppProviders from "@/providers/AppProviders";
 import { env } from "@/config/env";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -61,10 +62,12 @@ export default function RootLayout({
         suppressHydrationWarning
         className={cn("bg-background", "text-foreground", "flex", "min-h-screen", "flex-col")}
       >
-        <AppProviders>
-          {children}
-          <Toaster />
-        </AppProviders>
+        <TooltipProvider>
+          <AppProviders>
+            {children}
+            <Toaster />
+          </AppProviders>
+        </TooltipProvider>
       </body>
     </html>
   );
