@@ -1,24 +1,16 @@
-import { env } from "@/config/env";
-
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
-/**
- * Authentication providers.
- *
- * Google OAuth and Email/Password authentication.
- */
-
-const CREDENTIALS_PROVIDER_NAME = "Credentials";
+import { env } from "@/config/env";
 
 export const authProviders = [
   GoogleProvider({
-    clientId: env.GOOGLE_CLIENT_ID!,
-    clientSecret: env.GOOGLE_CLIENT_SECRET!,
+    clientId: env.GOOGLE_CLIENT_ID ?? "",
+    clientSecret: env.GOOGLE_CLIENT_SECRET ?? "",
   }),
 
   CredentialsProvider({
-    name: CREDENTIALS_PROVIDER_NAME,
+    name: "Credentials",
 
     credentials: {
       email: {
@@ -33,16 +25,19 @@ export const authProviders = [
     },
 
     async authorize(credentials) {
-      /**
-       * We will implement this step by step.
-       */
-    
       if (!credentials?.email || !credentials.password) {
-        throw new Error("Missing credentials.");
+        return null;
       }
-    
-      console.log(credentials);
-    
+
+      /**
+       * TODO:
+       * - Connect to MongoDB
+       * - Find user by email
+       * - Verify password
+       * - Update lastLoginAt
+       * - Return authenticated user
+       */
+
       return null;
     },
   }),

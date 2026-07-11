@@ -54,6 +54,7 @@ const UserSchema = new Schema<IUser>(
   },
   {
     timestamps: true, // Automatically manage createdAt and updatedAt fields
+    versionKey: false,
   },
 );
 
@@ -62,5 +63,10 @@ const UserSchema = new Schema<IUser>(
 UserSchema.index({ email: 1 }, { unique: true });
 
 // Create and export the User model
-const User = models.User || model<IUser>("User", UserSchema);
+const MODEL_NAME = "User";
+
+const User =
+  models[MODEL_NAME] ??
+  model<IUser>(MODEL_NAME, UserSchema);
+
 export default User;
