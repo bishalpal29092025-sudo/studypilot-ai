@@ -32,8 +32,17 @@ export const authProviders = [
       },
     },
 
-    async authorize() {
-      // We'll implement authentication logic next.
+    async authorize(credentials) {
+      /**
+       * We will implement this step by step.
+       */
+    
+      if (!credentials?.email || !credentials.password) {
+        throw new Error("Missing credentials.");
+      }
+    
+      console.log(credentials);
+    
       return null;
     },
   }),

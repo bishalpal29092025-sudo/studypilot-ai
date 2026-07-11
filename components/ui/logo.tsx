@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
+
 interface LogoProps {
   className?: string;
   href?: string;
@@ -16,6 +17,7 @@ export default function Logo({
   const logo = (
     <div className={cn("flex items-center gap-3", className)}>
       <div className="bg-primary text-primary-foreground flex h-11 w-11 items-center justify-center rounded-2xl shadow-lg">
+        {/* TODO: Replace with StudyPilot AI SVG logo */}
         <span aria-hidden="true">🎓</span>
       </div>
 

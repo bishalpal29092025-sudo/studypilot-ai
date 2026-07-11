@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Figtree } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import AppProviders from "@/providers/AppProviders";
+import { env } from "@/config/env";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -17,11 +18,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+
   title: {
     default: "StudyPilot AI",
     template: "%s | StudyPilot AI",
   },
-  description: "The AI that learns how you learn and helps you study better.",
+
+  description:
+    "The AI that learns how you learn and helps you study better.",
+
+  applicationName: "StudyPilot AI",
+
+  keywords: [
+    "AI",
+    "Education",
+    "Study",
+    "Learning",
+    "Roadmap",
+    "Quiz",
+    "Next.js",
+  ],
+
+  authors: [
+    {
+      name: "Bishal Pal",
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -42,7 +65,10 @@ export default function RootLayout({
         figtree.variable,
       )}
     >
-      <body className="bg-background text-foreground flex min-h-screen flex-col suppressHydrationWarning={true}">
+      <body
+        suppressHydrationWarning
+        className={cn("bg-background", "text-foreground", "flex", "min-h-screen", "flex-col")}
+      >
         <AppProviders>{children}</AppProviders>
       </body>
     </html>
