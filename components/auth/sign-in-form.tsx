@@ -1,7 +1,14 @@
 "use client";
 
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+
+import { signIn } from "next-auth/react";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,20 +19,41 @@ import {
 } from "@/lib/validations/auth";
 
 export default function SignInForm() {
+  const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignInInput>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
-  async function onSubmit(data: SignInInput) {
-    console.log(data);
+  const onSubmit = (data: SignInInput) => {
+    startTransition(async () => {
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
 
-    // Next lesson:
-    // await signIn("credentials", ...)
-  }
+      if (result?.error) {
+        toast.error("Invalid email or password.");
+        return;
+      }
+
+      toast.success("Welcome back!");
+
+      router.push("/");
+      router.refresh();
+    });
+  };
 
   return (
     <form
@@ -36,6 +64,7 @@ export default function SignInForm() {
         <Input
           type="email"
           placeholder="Email address"
+          autoComplete="email"
           {...register("email")}
         />
 
@@ -50,6 +79,7 @@ export default function SignInForm() {
         <Input
           type="password"
           placeholder="Password"
+          autoComplete="current-password"
           {...register("password")}
         />
 
@@ -63,11 +93,9 @@ export default function SignInForm() {
       <Button
         type="submit"
         className="h-12 w-full rounded-xl"
-        disabled={isSubmitting}
+        disabled={isPending}
       >
-        {isSubmitting
-          ? "Signing in..."
-          : "Sign In"}
+        {isPending ? "Signing in..." : "Sign In"}
       </Button>
     </form>
   );
