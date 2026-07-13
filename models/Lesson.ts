@@ -1,5 +1,18 @@
 import { Schema, model, models, type Types } from "mongoose";
 
+/**
+ * A lesson belongs to a module.
+ *
+ * Example:
+ *
+ * Module: Python Fundamentals
+ * ├── Variables
+ * ├── Data Types
+ * ├── Functions
+ * ├── Loops
+ * └── OOP
+ */
+
 export type LessonDifficulty =
   | "beginner"
   | "intermediate"
@@ -11,14 +24,12 @@ export type LessonStatus =
   | "archived";
 
 export interface ILesson {
+  module: Types.ObjectId;
+
   title: string;
   slug: string;
 
   description: string | null;
-
-  module: Types.ObjectId;
-
-  order: number;
 
   content: string;
 
@@ -28,9 +39,15 @@ export interface ILesson {
 
   resources: string[];
 
+  order: number;
+
   estimatedMinutes: number;
 
   difficulty: LessonDifficulty;
+
+  videoUrl: string | null;
+
+  aiGenerated: boolean;
 
   status: LessonStatus;
 
@@ -40,44 +57,43 @@ export interface ILesson {
 
 const LessonSchema = new Schema<ILesson>(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    slug: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-    },
-
-    description: {
-      type: String,
-      default: null,
-    },
-
     module: {
       type: Schema.Types.ObjectId,
       ref: "Module",
       required: true,
     },
 
-    order: {
-      type: Number,
+    title: {
+      type: String,
       required: true,
-      min: 1,
+      trim: true,
+      maxlength: 120,
+    },
+
+    slug: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
+
+    description: {
+      type: String,
+      default: null,
+      trim: true,
+      maxlength: 1000,
     },
 
     content: {
       type: String,
-      default: "",
+      required: true,
     },
 
     summary: {
       type: String,
       default: null,
+      trim: true,
+      maxlength: 2000,
     },
 
     objectives: {
@@ -88,6 +104,12 @@ const LessonSchema = new Schema<ILesson>(
     resources: {
       type: [String],
       default: [],
+    },
+
+    order: {
+      type: Number,
+      required: true,
+      min: 1,
     },
 
     estimatedMinutes: {
@@ -102,6 +124,17 @@ const LessonSchema = new Schema<ILesson>(
       default: "beginner",
     },
 
+    videoUrl: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+
+    aiGenerated: {
+      type: Boolean,
+      default: false,
+    },
+
     status: {
       type: String,
       enum: ["draft", "published", "archived"],
@@ -114,12 +147,32 @@ const LessonSchema = new Schema<ILesson>(
   },
 );
 
+// Prevent duplicate lesson order within a module.
 LessonSchema.index(
-  { module: 1, order: 1 },
-  { unique: true },
+  {
+    module: 1,
+    order: 1,
+  },
+  {
+    unique: true,
+    name: "unique_lesson_order",
+  },
 );
 
-LessonSchema.index({ slug: 1 }, { unique: true });
+// Fast lookup by module.
+LessonSchema.index({
+  module: 1,
+});
+
+// Fast lookup by slug.
+LessonSchema.index(
+  {
+    slug: 1,
+  },
+  {
+    unique: true,
+  },
+);
 
 const MODEL_NAME = "Lesson";
 

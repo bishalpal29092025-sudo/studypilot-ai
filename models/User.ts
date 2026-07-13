@@ -59,8 +59,6 @@ const UserSchema = new Schema<IUser>(
 );
 
 
-// Indexes for efficient querying
-UserSchema.index({ email: 1 }, { unique: true });
 
 // Create and export the User model
 const MODEL_NAME = "User";

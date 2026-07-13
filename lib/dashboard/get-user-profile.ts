@@ -1,20 +1,40 @@
+import { Types } from "mongoose";
+
 import { connectToDatabase } from "@/lib/db/connect";
 import { getCurrentUser } from "@/lib/auth/user";
 
+import User from "@/models/User";
 import Profile from "@/models/Profile";
 
 export async function getUserProfile() {
   await connectToDatabase();
 
-  const user = await getCurrentUser();
+  const sessionUser = await getCurrentUser();
 
-  if (!user) {
+  if (!sessionUser) {
     return null;
   }
 
-  const profile = await Profile.findOne({
-    user: user.id,
-  });
+  let userId = sessionUser.id;
 
-  return profile;
+  // If the session id is not a MongoDB ObjectId,
+  // try finding the User by providerId or email.
+  if (!Types.ObjectId.isValid(userId)) {
+    const dbUser = await User.findOne({
+      $or: [
+        { providerId: userId },
+        { email: sessionUser.email },
+      ],
+    });
+
+    if (!dbUser) {
+      return null;
+    }
+
+    userId = dbUser._id.toString();
+  }
+
+  return Profile.findOne({
+    user: userId,
+  });
 }

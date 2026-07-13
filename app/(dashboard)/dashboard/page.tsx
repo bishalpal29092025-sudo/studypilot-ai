@@ -1,16 +1,16 @@
-import { redirect } from "next/navigation";
 import { BookOpen, CheckCircle2, Clock3, Flame } from "lucide-react";
+
 import StatCard from "@/components/dashboard/cards/stat-card";
 import WelcomeBanner from "@/components/dashboard/widgets/welcome-banner";
+
 import { getDashboardData } from "@/lib/dashboard";
+import { requireAuth } from "@/lib/auth/protect";
 
 export default async function DashboardPage() {
+  await requireAuth();
+
   const dashboard = await getDashboardData();
 
-  // Add it here
-  if (!dashboard.user) {
-    redirect("/sign-in");
-  }
   return (
     <div className="space-y-6">
       <WelcomeBanner />
