@@ -1,11 +1,13 @@
 import { Schema, model, models } from "mongoose";
+import type { CourseLevel } from "@/types/course";
+import { COURSE_LEVELS } from "@/types/course";
 
 export interface ICourse {
   title: string;
   slug: string;
   description: string;
   category: string;
-  level: "beginner" | "intermediate" | "advanced";
+  level: CourseLevel;
 
   thumbnail: string | null;
 
@@ -50,7 +52,7 @@ const CourseSchema = new Schema<ICourse>(
 
     level: {
       type: String,
-      enum: ["beginner", "intermediate", "advanced"],
+      enum: COURSE_LEVELS,
       default: "beginner",
     },
 

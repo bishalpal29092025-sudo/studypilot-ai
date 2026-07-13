@@ -1,10 +1,27 @@
 /**
- * Course DTO returned to the UI.
- *
- * Never expose MongoDB documents directly
- * to the frontend.
+ * ===========================
+ * Course Domain
+ * ===========================
  */
-export interface CourseDto {
+
+/**
+ * Allowed course levels.
+ */
+export const COURSE_LEVELS = [
+    "beginner",
+    "intermediate",
+    "advanced",
+  ] as const;
+  
+  /**
+   * Course level type.
+   */
+  export type CourseLevel = (typeof COURSE_LEVELS)[number];
+  
+  /**
+   * Course DTO returned to the UI.
+   */
+  export interface CourseDto {
     id: string;
   
     title: string;
@@ -13,5 +30,5 @@ export interface CourseDto {
   
     description: string | null;
   
-    level: string;
+    level: CourseLevel;
   }
