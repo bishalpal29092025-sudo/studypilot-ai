@@ -8,9 +8,7 @@ export class CourseRepository {
   async findAll() {
     await connectToDatabase();
 
-    return Course.find()
-      .sort({ createdAt: -1 })
-      .lean();
+    return Course.find().sort({ createdAt: -1 }).lean();
   }
 
   /**

@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import mongoose from "mongoose";
 
 import { connectToDatabase } from "@/lib/db/connect";
@@ -16,6 +14,7 @@ import { lessons } from "./data/lessons";
 
 import { logger } from "./helpers/logger";
 import { resetDatabase } from "./helpers/reset-db";
+
 
 async function seed() {
   try {

@@ -15,14 +15,26 @@ export class CourseService {
    * Get course by ID.
    */
   async getCourseById(id: string) {
-    return courseRepository.findById(id);
+    const course = await courseRepository.findById(id);
+
+    if (!course) {
+      return null;
+    }
+
+    return mapCourse(course);
   }
 
   /**
    * Get course by slug.
    */
   async getCourseBySlug(slug: string) {
-    return courseRepository.findBySlug(slug);
+    const course = await courseRepository.findBySlug(slug);
+
+    if (!course) {
+      return null;
+    }
+
+    return mapCourse(course);
   }
 
   /**
