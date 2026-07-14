@@ -2,6 +2,10 @@ import { notFound } from "next/navigation";
 
 import { getCourseBySlug } from "@/lib/actions/courses/get-course-by-slug";
 
+import CourseHero from "@/components/courses/CourseHero";
+import CourseDescription from "@/components/courses/CourseDescription";
+import CourseRoadmapPreview from "@/components/courses/CourseRoadmapPreview";
+
 interface CoursePageProps {
   params: Promise<{
     slug: string;
@@ -20,20 +24,12 @@ export default async function CoursePage({
   }
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10">
-      <h1 className="text-4xl font-bold">
-        {course.title}
-      </h1>
+    <main className="mx-auto max-w-6xl space-y-8 px-6 py-10">
+      <CourseHero course={course} />
 
-      <p className="mt-4 text-muted-foreground">
-        {course.description}
-      </p>
+      <CourseDescription course={course} />
 
-      <div className="mt-6">
-        <span className="rounded-full bg-primary/10 px-3 py-1 text-sm">
-          {course.level}
-        </span>
-      </div>
+      <CourseRoadmapPreview />
     </main>
   );
 }
