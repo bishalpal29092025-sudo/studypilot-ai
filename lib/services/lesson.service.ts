@@ -2,30 +2,33 @@ import { mapLesson } from "@/lib/mappers/lesson.mapper";
 import { lessonRepository } from "@/lib/repositories/lesson.repository";
 
 export class LessonService {
-  async getLessonsByModule(
-    moduleId: string,
-  ) {
-    const lessonDocuments =
-      await lessonRepository.findByModule(
-        moduleId,
-      );
+  async getLessonsByModule(moduleId: string) {
+    const lessons =
+      await lessonRepository.findByModule(moduleId);
 
-    return lessonDocuments.map(mapLesson);
+    return lessons.map(mapLesson);
   }
 
   async getLessonBySlug(slug: string) {
-    const lessonDocument =
-      await lessonRepository.findBySlug(
-        slug,
-      );
+    const lesson =
+      await lessonRepository.findBySlug(slug);
 
-    if (!lessonDocument) {
+    if (!lesson) {
       return null;
     }
 
-    return mapLesson(
-      lessonDocument,
-    );
+    return mapLesson(lesson);
+  }
+
+  async getLessonById(id: string) {
+    const lesson =
+      await lessonRepository.findById(id);
+
+    if (!lesson) {
+      return null;
+    }
+
+    return mapLesson(lesson);
   }
 }
 

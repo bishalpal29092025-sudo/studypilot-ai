@@ -4,7 +4,7 @@ import Lesson from "@/models/Lesson";
 
 export class LessonRepository {
   /**
-   * Get all lessons of a module.
+   * Find all lessons in a module.
    */
   async findByModule(moduleId: string) {
     await connectToDatabase();
@@ -27,6 +27,15 @@ export class LessonRepository {
     return Lesson.findOne({
       slug,
     }).lean();
+  }
+
+  /**
+   * Find lesson by ID.
+   */
+  async findById(id: string) {
+    await connectToDatabase();
+
+    return Lesson.findById(id).lean();
   }
 }
 
