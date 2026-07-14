@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getLessonsByModule } from "@/lib/actions/lessons/get-lessons-by-module";
@@ -47,16 +48,17 @@ export default async function ModulePage({
           Lessons
         </h2>
 
-        <div className="space-y-4">
-          {lessons.length === 0 ? (
-            <p className="text-muted-foreground">
-              No lessons available.
-            </p>
-          ) : (
-            lessons.map((lesson) => (
-              <div
+        {lessons.length === 0 ? (
+          <p className="text-muted-foreground">
+            No lessons available.
+          </p>
+        ) : (
+          <div className="space-y-4">
+            {lessons.map((lesson) => (
+              <Link
                 key={lesson.id}
-                className="rounded-xl border p-4 transition-colors hover:bg-accent"
+                href={`/lessons/${lesson.slug}`}
+                className="block rounded-xl border p-4 transition-colors hover:bg-accent"
               >
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold">
@@ -73,10 +75,10 @@ export default async function ModulePage({
                     {lesson.description}
                   </p>
                 )}
-              </div>
-            ))
-          )}
-        </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

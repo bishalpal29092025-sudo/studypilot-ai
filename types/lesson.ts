@@ -19,4 +19,12 @@ export interface LessonDto {
   difficulty: LessonDifficulty;
 
   status: string;
+
+  content: string;
+
+  summary: string;
+
+  objectives: string[];
+
+  resources: string[];
 }

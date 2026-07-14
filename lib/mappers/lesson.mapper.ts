@@ -17,6 +17,14 @@ export function mapLesson(document: {
 
   difficulty: LessonDto["difficulty"];
 
+  content: string;
+
+summary: string;
+
+objectives: string[];
+
+resources: string[];
+
   status: string;
 }): LessonDto {
   return {
@@ -35,5 +43,13 @@ export function mapLesson(document: {
     difficulty: document.difficulty,
 
     status: document.status,
+
+    content: document.content,
+
+    summary: document.summary,
+
+    objectives: document.objectives,
+
+    resources: document.resources,
   };
 }
