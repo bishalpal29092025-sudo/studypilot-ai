@@ -1,15 +1,12 @@
-const roadmap = [
-  "Python Fundamentals",
-  "Mathematics for AI",
-  "Machine Learning",
-  "Deep Learning",
-  "Natural Language Processing",
-  "Retrieval-Augmented Generation",
-  "LangChain & LangGraph",
-  "Deployment",
-];
+import type { ModuleDto } from "@/types/module";
 
-export default function CourseRoadmapPreview() {
+interface CourseRoadmapPreviewProps {
+  modules: ModuleDto[];
+}
+
+export default function CourseRoadmapPreview({
+  modules,
+}: CourseRoadmapPreviewProps) {
   return (
     <section className="rounded-2xl border p-8">
       <h2 className="mb-6 text-2xl font-semibold">
@@ -17,18 +14,24 @@ export default function CourseRoadmapPreview() {
       </h2>
 
       <div className="space-y-4">
-        {roadmap.map((module, index) => (
+        {modules.map((module) => (
           <div
-            key={module}
-            className="flex items-center gap-4 rounded-lg border p-4"
+            key={module.id}
+            className="flex items-center gap-4 rounded-xl border p-4"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-              {index + 1}
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground">
+              {module.order}
             </div>
 
-            <p className="font-medium">
-              {module}
-            </p>
+            <div>
+              <h3 className="font-semibold">
+                {module.title}
+              </h3>
+
+              <p className="text-sm text-muted-foreground">
+                {module.estimatedMinutes} mins
+              </p>
+            </div>
           </div>
         ))}
       </div>

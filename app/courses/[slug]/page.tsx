@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 
-import { getCourseBySlug } from "@/lib/actions/courses/get-course-by-slug";
-
-import CourseHero from "@/components/courses/CourseHero";
 import CourseDescription from "@/components/courses/CourseDescription";
+import CourseHero from "@/components/courses/CourseHero";
 import CourseRoadmapPreview from "@/components/courses/CourseRoadmapPreview";
+
+import { getCourseBySlug } from "@/lib/actions/courses/get-course-by-slug";
+import { getModulesByRoadmap } from "@/lib/actions/modules/get-modules-by-roadmap";
+import { getRoadmapByCourse } from "@/lib/actions/roadmaps/get-roadmap-by-course";
 
 interface CoursePageProps {
   params: Promise<{
@@ -17,11 +19,26 @@ export default async function CoursePage({
 }: CoursePageProps) {
   const { slug } = await params;
 
+  // -----------------------------
+  // Get Course
+  // -----------------------------
   const course = await getCourseBySlug(slug);
 
   if (!course) {
     notFound();
   }
+
+  // -----------------------------
+  // Get Roadmap
+  // -----------------------------
+  const roadmap = await getRoadmapByCourse(course.id);
+
+  // -----------------------------
+  // Get Modules
+  // -----------------------------
+  const modules = roadmap
+    ? await getModulesByRoadmap(roadmap.id)
+    : [];
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-6 py-10">
@@ -29,7 +46,7 @@ export default async function CoursePage({
 
       <CourseDescription course={course} />
 
-      <CourseRoadmapPreview />
+      <CourseRoadmapPreview modules={modules} />
     </main>
   );
 }
