@@ -19,26 +19,27 @@ export default async function CoursePage({
 }: CoursePageProps) {
   const { slug } = await params;
 
-  // -----------------------------
-  // Get Course
-  // -----------------------------
+  // Get course
   const course = await getCourseBySlug(slug);
 
   if (!course) {
     notFound();
   }
 
-  // -----------------------------
-  // Get Roadmap
-  // -----------------------------
+  // Get roadmap
   const roadmap = await getRoadmapByCourse(course.id);
 
-  // -----------------------------
-  // Get Modules
-  // -----------------------------
+  // Get modules
   const modules = roadmap
     ? await getModulesByRoadmap(roadmap.id)
     : [];
+
+  // Debug
+  console.log("================================");
+  console.log("Course:", course);
+  console.log("Roadmap:", roadmap);
+  console.log("Modules:", modules);
+  console.log("================================");
 
   return (
     <main className="mx-auto max-w-6xl space-y-8 px-6 py-10">

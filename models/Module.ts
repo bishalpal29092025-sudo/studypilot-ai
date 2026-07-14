@@ -12,7 +12,7 @@ import { Schema, model, models, type Types } from "mongoose";
  * └── Module 4: Deep Learning
  */
 
-export interface IModule {
+export interface IModule {   
   roadmap: Types.ObjectId;
 
   title: string;
