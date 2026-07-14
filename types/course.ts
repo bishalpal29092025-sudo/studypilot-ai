@@ -1,34 +1,30 @@
-/**
- * ===========================
- * Course Domain
- * ===========================
- */
+export type CourseLevel =
+  | "beginner"
+  | "intermediate"
+  | "advanced";
 
-/**
- * Allowed course levels.
- */
 export const COURSE_LEVELS = [
-    "beginner",
-    "intermediate",
-    "advanced",
-  ] as const;
-  
-  /**
-   * Course level type.
-   */
-  export type CourseLevel = (typeof COURSE_LEVELS)[number];
-  
-  /**
-   * Course DTO returned to the UI.
-   */
-  export interface CourseDto {
-    id: string;
-  
-    title: string;
-  
-    slug: string;
-  
-    description: string | null;
-  
-    level: CourseLevel;
-  }
+  "beginner",
+  "intermediate",
+  "advanced",
+] as const;
+
+export interface CourseDto {
+  id: string;
+
+  title: string;
+
+  slug: string;
+
+  description: string;
+
+  category: string;
+
+  level: CourseLevel;
+
+  thumbnail: string | null;
+
+  estimatedHours: number;
+
+  tags: string[];
+}
